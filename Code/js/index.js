@@ -1,21 +1,78 @@
 $( document ).ready( function( )
 {
-	var objectTypes = ["square", "rectangle", "circle"];
+	var transforms = ["colour", "position"];
 
-	function create( objectIndex )
+	var transformMethods = [];
+	transformMethods[0] = function( )
 	{
-		console.log( "Create: " + objectTypes[objectIndex] );
-	}
+		//return 
+	};
 
-	function move()
+
+
+
+
+
+	var objectTypes = ["square", "circle", "triangle", "pentagon" ];
+
+	var objectMethods = [];
+	objectMethods[0] = function( )
 	{
-		console.log( "Move method called, duff man" );
-	}
+		$( "canvas" ).drawRect(
+		{
+			fillStyle: 'red',
+		  	x: 100, y: 100,
+		  	width: 200,
+		  	height: 200,
+		  	fromCenter: false
+		} );
+	};
+
+	objectMethods[1] = function( )
+	{
+		// Draw a circle
+		$( "canvas" ).drawArc(
+		{
+		  	draggable: true,
+		  	fillStyle: "green",
+		  	x: 100, y: 100,
+		  	radius: 50,
+		  	fromCenter: false
+		});
+	};
+
+	objectMethods[3] = function( )
+	{
+		// Draw a polygon
+		$( "canvas" ).drawPolygon(
+		{
+		  fillStyle: '#589',
+		  strokeStyle: '#000',
+		  x: 100, y: 100,
+		  radius: 50,
+		  sides: 5
+		} );
+	};
+
+
+
+
+
 
 	var methods = ["create", "move"];
 	var methodFunctions = [];
-	methodFunctions[0] = function( objectIndex ) { create( objectIndex ); };
-	methodFunctions[1] = function() { move( ); };
+	methodFunctions[0] = function( objectIndex )
+	{
+		objectMethods[objectIndex]( );
+		//console.log( "Create: " + objectTypes[objectIndex] );
+	};
+
+
+
+
+
+
+
 
 	$( "#RunCode" ).click( function( )
 	{
