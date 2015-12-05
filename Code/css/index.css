@@ -1,0 +1,11 @@
+#InputContainer
+{
+	background-color: white;
+	height: 100vh;
+}
+
+#OutputContainer
+{
+	background-color: gray;
+	height: 100vh;
+}
