@@ -1,0 +1,17 @@
+#InputContainer
+{
+	background-color: white;
+	height: 100vh;
+}
+
+#OutputContainer
+{
+	background-color: gray;
+	height: 100vh;
+}
+
+/*canvas
+{
+	width: 100%;
+	height: 100%;
+}*/
