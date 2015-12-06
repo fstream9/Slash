@@ -42,10 +42,10 @@
 				// Get the selected service operation (Web or Image).
 
 				$serviceOp = "Image";
-
+				$
 				// Construct the full URI for the query.
 
-				$requestUri = "$rootUri/$serviceOp?\$format=json&Query=$query";
+				$requestUri = "$rootUri/$serviceOp?\$format=json&Query=$query&ImageFilters";
 				// Encode the credentials and create the stream context.
 
 				$auth = base64_encode("$acctKey:$acctKey");
