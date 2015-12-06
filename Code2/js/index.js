@@ -1,3 +1,8 @@
+<?php
+	require_once 'alchemyapi.php';
+	$alchemyapi = new AlchemyAPI();
+?>
+
 $( document ).ready( function( )
 {
 	var transforms = ["colour", "position"];
@@ -148,6 +153,25 @@ $( document ).ready( function( )
 		if ( -1 !== methodIndex && -1 !== objectIndex )
 		{
 			methodFunctions[methodIndex]( objectIndex, transformationsIndexArr, transformationsPropertiesArr );
+		} else if (-1 !== methodIndex && -1 == objectIndex){
+			$.ajax({
+			      url: 'example.php',
+			      type: 'post',
+			      data: {'demo': code},
+			      success: function(data, status) {
+			        if(data == "ok") {
+			          $('#followbtncontainer').html('<p><em>Following!</em></p>');
+			          var numfollowers = parseInt($('#followercnt').html()) + 1;
+			          $('#followercnt').html(numfollowers);
+			        }
+			      },
+			      error: function(xhr, desc, err) {
+			        console.log(xhr);
+			        console.log("Details: " + desc + "\nError:" + err);
+			      }
+			    });
+
+			}
 		}
 	} );
 
