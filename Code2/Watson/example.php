@@ -19,8 +19,11 @@
 	$alchemyapi = new AlchemyAPI();
 	
 
-	$demo_text = 'Create a red square in A5.';
+	$demo_text = $_POST['code'];
 
+	$acctKey = 'Jwi85+PUNdH67fwvjhbDpVbdoQgoKdMK4h9q09/FeuA';
+
+	$rootUri = 'https://api.datamarket.azure.com/Bing/Search';
 	
 	$response = $alchemyapi->relations('text',$demo_text, null);
 
@@ -28,24 +31,65 @@
 		//echo '## Response Object ##', "<br />";
 		//echo print_r($response);
 
-		echo "<br />";
-		echo '## Relations ##', "<br />";
+		//echo "<br />";
+		//echo '## Relations ##', "<br />";
 		foreach ($response['relations'] as $relation) {
 			if (array_key_exists('subject', $relation)) {
-				echo 'Subject: ', $relation['subject']['text'], "<br />";
+				// Encode the query and the single quotes that must surround it.
+
+				$query = urlencode("'{$relation['subject']['text']}' filterui:photo-transparent");
+
+				// Get the selected service operation (Web or Image).
+
+				$serviceOp = "Image";
+
+				// Construct the full URI for the query.
+
+				$requestUri = "$rootUri/$serviceOp?\$format=json&Query=$query";
+				// Encode the credentials and create the stream context.
+
+				$auth = base64_encode("$acctKey:$acctKey");
+
+				$data = array(
+
+				'http' => array(
+
+				'request_fulluri' => true,
+
+				// ignore_errors can help debug – remove for production. This option added in PHP 5.2.10
+
+				'ignore_errors' => true,
+
+				'header' => "Authorization: Basic $auth")
+
+				);
+
+				$context = stream_context_create($data);
+
+				// Get the response from Bing.
+
+				$responsetwo = file_get_contents($requestUri, 0, $context);
+				// Decode the response. 
+				$jsonObj = json_decode($responsetwo);
+
+				$resultStr = '';
+				$resultStr .= "<h4>{$value->Title} ({$value->Width}x{$value->Height}) " . "{$value->FileSize} bytes)</h4>" . "<a href=\"{$value->MediaUrl}\">" . "<img src=\"{$value->Thumbnail->MediaUrl}\"></a><br />";
+				// Substitute the results placeholder. Ready to go.
+				$contents = str_replace('{RESULTS}', $resultStr, $contents);
+				echo ;
 			}
 
-			if (array_key_exists('action', $relation)) {
-				echo 'Action: ', $relation['action']['text'], "<br />";
-			}
-
-			if (array_key_exists('object', $relation)) {
-				echo 'Object: ', $relation['object']['text'], "<br />";
-			}
-			if (array_key_exists('location', $relation)) {
-				echo 'Location: ', $relation['location']['text'], "<br />";
-			}
-			echo "<br />";
+			//if (array_key_exists('action', $relation)) {
+		//		echo 'Action: ', $relation['action']['text'], "<br />";
+		//	}
+//
+	//		if (array_key_exists('object', $relation)) {
+	//			echo 'Object: ', $relation['object']['text'], "<br />";
+	//		}
+	//		if (array_key_exists('location', $relation)) {
+	//			echo 'Location: ', $relation['location']['text'], "<br />";
+	//		}
+	//		echo "<br />";
 		}
 	} else {
 		echo 'Error in the relation extraction call: ', $response['statusInfo'];

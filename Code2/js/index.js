@@ -1,7 +1,4 @@
-<?php
-	require_once 'alchemyapi.php';
-	$alchemyapi = new AlchemyAPI();
-?>
+
 
 $( document ).ready( function( )
 {
@@ -88,8 +85,35 @@ $( document ).ready( function( )
 		//console.log( "Create: " + objectTypes[objectIndex] );
 	};
 
+	var watsonFunctions = [];
+	watsonFunctions[0] = function( object, transformType, transformData )
+	{
+		$.ajax({
+			url: 'http://api.bing.net/json.aspx?',
+			dataType: "jsonp",
+			data: {
+				rsz: 1,
+				start: 0,
+				q: object,
+				key: "AIzaSyB_CfhJxVaFQfx-dcoOl8T162B5MG2F-po"
+			},
+			success: function(response) {
+				console.log(response);
+				if (response.responseData === null) {
+					console.log("No pictures found!");
+				} else {
+						/****create image object here****/
+						$('canvas').drawImage({
+						  source: response.responseData.results[0].unescapedUrl,
+						  x: 150, y: 150
+						});
+				}
+			}
+		});
+		//console.log( "Create: " + objectTypes[objectIndex] );
+	};
 
-
+	
 
 
 
@@ -155,15 +179,14 @@ $( document ).ready( function( )
 			methodFunctions[methodIndex]( objectIndex, transformationsIndexArr, transformationsPropertiesArr );
 		} else if (-1 !== methodIndex && -1 == objectIndex){
 			$.ajax({
-			      url: 'example.php',
+			      url: 'Watson/example.php',
 			      type: 'post',
-			      data: {'demo': code},
-			      success: function(data, status) {
-			        if(data == "ok") {
-			          $('#followbtncontainer').html('<p><em>Following!</em></p>');
-			          var numfollowers = parseInt($('#followercnt').html()) + 1;
-			          $('#followercnt').html(numfollowers);
-			        }
+			      data: {code: code},
+			      dataType: "text",
+			      success: function(data) {
+			  
+			        watsonFunctions[methodIndex]( data, transformationsIndexArr, transformationsPropertiesArr );
+			        
 			      },
 			      error: function(xhr, desc, err) {
 			        console.log(xhr);
@@ -172,7 +195,7 @@ $( document ).ready( function( )
 			    });
 
 			}
-		}
+		
 	} );
 
 
