@@ -88,28 +88,13 @@ $( document ).ready( function( )
 	var watsonFunctions = [];
 	watsonFunctions[0] = function( object, transformType, transformData )
 	{
-		$.ajax({
-			url: 'http://api.bing.net/json.aspx?',
-			dataType: "jsonp",
-			data: {
-				rsz: 1,
-				start: 0,
-				q: object,
-				key: "AIzaSyB_CfhJxVaFQfx-dcoOl8T162B5MG2F-po"
-			},
-			success: function(response) {
-				console.log(response);
-				if (response.responseData === null) {
-					console.log("No pictures found!");
-				} else {
+		
 						/****create image object here****/
 						$('canvas').drawImage({
-						  source: response.responseData.results[0].unescapedUrl,
-						  x: 150, y: 150
+						  source: object,
+						  x: 100, y: 100
 						});
-				}
-			}
-		});
+				
 		//console.log( "Create: " + objectTypes[objectIndex] );
 	};
 
@@ -184,7 +169,7 @@ $( document ).ready( function( )
 			      data: {code: code},
 			      dataType: "text",
 			      success: function(data) {
-			  
+			  		console.log(data);
 			        watsonFunctions[methodIndex]( data, transformationsIndexArr, transformationsPropertiesArr );
 			        
 			      },
