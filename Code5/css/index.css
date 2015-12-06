@@ -1,12 +1,13 @@
 #InputContainer
 {
-	background-color: white;
+	color: white;
+	background-color: gray;
 	height: 100vh;
 }
 
 #OutputContainer
 {
-	background-color: gray;
+	background-color: white;
 	height: 100vh;
 }
 
